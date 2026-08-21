@@ -73,13 +73,14 @@
 
 <dialog id="detailDialog" class="detail-dialog">
 <div class="detail">
-  <div class="detail-top"><button id="closeDetailBtn" class="round-btn">×</button><button id="editBirdBtn" class="round-btn">✎</button><button id="deleteBirdBtn" class="round-btn danger-round" aria-label="Delete bird">⌫</button></div>
+  <div class="detail-top"><button id="closeDetailBtn" class="round-btn" aria-label="Close">×</button><button id="editBirdBtn" class="round-btn" aria-label="Edit bird">✎</button></div>
   <img id="detailHero" class="detail-hero" alt="">
   <div class="detail-content">
     <div class="title-line"><span id="detailRarityDot" class="rarity-dot large"></span><div><h2 id="detailCommonName"></h2><p id="detailScientificName" class="scientific"></p></div></div>
     <p id="detailMeta" class="muted"></p><p id="detailNotes"></p>
     <div class="section-title"><h3>Sightings</h3><button id="addSightingBtn" class="secondary-btn">＋ Add sighting</button></div>
     <div id="sightingsList" class="sightings-list"></div>
+    <button id="deleteBirdBtn" class="delete-bird-btn" type="button">Delete bird from compendium</button>
   </div>
 </div>
 </dialog>
@@ -97,8 +98,22 @@
 </form>
 </dialog>
 
-<template id="birdTileTemplate"><button class="bird-tile"><img class="tile-photo" alt=""><div class="tile-overlay"><span class="rarity-dot"></span><span class="tile-name"></span></div></button></template>
-<template id="sightingTemplate"><article class="sighting-card"><div class="sighting-head"><div><strong class="sighting-date"></strong><div class="sighting-location muted small"></div></div></div><div class="photo-strip sighting-photos"></div><p class="sighting-notes"></p></article></template>
+<dialog id="editSightingDialog" class="sheet-dialog">
+<form method="dialog" class="sheet">
+  <div class="sheet-head"><button value="cancel" class="text-btn">Cancel</button><h2>Edit sighting</h2><button id="updateSightingBtn" value="default" class="text-btn accent">Save</button></div>
+  <div class="sheet-body">
+    <label><span>Add more photos</span><input id="editSightingPhotosInput" type="file" accept="image/*" multiple></label>
+    <div id="editSightingExistingPhotos" class="photo-strip"></div>
+    <div id="editSightingNewPhotoStrip" class="photo-strip"></div>
+    <label><span>Date</span><input id="editSightingDateInput" type="date"></label>
+    <label><span>Location</span><div class="location-row"><input id="editSightingLocationInput" type="text"><button type="button" id="editSightingUseLocationBtn" class="mini-btn">Use GPS</button></div></label>
+    <label><span>Notes <em>optional</em></span><textarea id="editSightingNotesInput" rows="4"></textarea></label>
+  </div>
+</form>
+</dialog>
+
+<template id="birdTileTemplate"><button class="bird-tile"><img class="tile-photo" alt=""><span class="multi-sighting-badge" aria-label="Multiple sightings" title="Multiple sightings"><span></span><span></span></span><div class="tile-overlay"><span class="rarity-dot"></span><span class="tile-name"></span></div></button></template>
+<template id="sightingTemplate"><article class="sighting-card"><div class="sighting-head"><div><strong class="sighting-date"></strong><div class="sighting-location muted small"></div></div><div class="sighting-actions"><button type="button" class="mini-btn edit-sighting-btn">Edit</button><button type="button" class="mini-btn delete-sighting-btn">Delete</button></div></div><div class="photo-strip sighting-photos"></div><p class="sighting-notes"></p></article></template>
 
 <script src="app.js"></script>
 </body>

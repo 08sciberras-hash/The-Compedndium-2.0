@@ -42,3 +42,13 @@ Internet is only required for species lookup, local rarity suggestion, and rever
 
 ### Important iOS icon note
 If the old Home Screen icon remains after you deploy this update, iOS may keep the previous icon cached. Remove the Home Screen shortcut and add the same site to Home Screen again. Your bird data belongs to the site storage, not to the shortcut icon itself, as long as the hosted URL stays exactly the same.
+
+
+## Version 3 update
+- The Edit button now edits the existing species card instead of behaving like a new-entry form.
+- Species editing can change the common name, scientific name, class, general notes, and main image.
+- Each sighting now has its own Edit and Delete controls so dates, locations, notes, and photos can be changed later.
+- Added an explicit red “Delete bird from compendium” button inside each species card.
+- Tiles with more than one sighting show a small overlapping-windows badge in the top-right corner.
+- Existing IndexedDB name/version are unchanged so this release is designed to keep existing bird data when deployed over the same GitHub Pages URL.
+- Service-worker cache bumped to v3.

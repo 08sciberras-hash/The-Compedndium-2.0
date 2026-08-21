@@ -30,3 +30,15 @@ fieldset{border:0;padding:0;margin:0}.rarity-picker{display:grid;grid-template-c
 
 .danger-round{background:rgba(135,25,25,.82);color:#fff}
 .danger-round:active{transform:scale(.96)}
+
+/* v3 */
+.multi-sighting-badge{display:none;position:absolute;top:11px;right:11px;width:29px;height:25px;z-index:2;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+.multi-sighting-badge.visible{display:block}
+.multi-sighting-badge span{position:absolute;width:17px;height:14px;border:2px solid #fff;border-radius:4px;background:rgba(16,18,20,.35)}
+.multi-sighting-badge span:first-child{left:1px;top:7px}.multi-sighting-badge span:last-child{right:1px;top:1px}
+.sighting-actions{display:flex;gap:7px;margin-left:auto}
+.delete-sighting-btn{color:#ff8c8c;border-color:rgba(255,93,93,.28)}
+.delete-bird-btn{width:100%;margin:28px 0 10px;border:1px solid rgba(255,91,91,.35);background:rgba(105,20,20,.22);color:#ff9a9a;border-radius:14px;padding:13px 16px;font-weight:700}
+.remove-photo-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(0,0,0,.76);color:white;font-size:16px;line-height:28px;padding:0}
+.photo-choice.editing{position:relative}
+.edit-mode-note{padding:10px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--muted);font-size:13px}
