@@ -21,16 +21,6 @@ async function geocodeLocation(text){
   if(!j.length)return null;
   return {lat:Number(j[0].lat),lon:Number(j[0].lon),label:j[0].display_name?.split(',').slice(0,3).join(',')||text};
 }
-function currentCoords(){
-  return new Promise(resolve=>{
-    if(!navigator.geolocation){resolve(null);return}
-    navigator.geolocation.getCurrentPosition(
-      p=>resolve({lat:p.coords.latitude,lon:p.coords.longitude,label:'your current location'}),
-      ()=>resolve(null),
-      {enableHighAccuracy:true,timeout:10000,maximumAge:60000}
-    );
-  });
-}
 async function suggestAt(coords){
   const taxonId=await resolveTaxonId();
   if(!taxonId){status('Enter or look up the species first');return}
@@ -47,32 +37,21 @@ async function suggestAt(coords){
 async function suggestFromEntered(){
   const input=document.getElementById('birdLocationInput');
   const place=(input?.value||'').trim();
-  if(!place){status('Enter the sighting location first, or use Current location');return}
+  if(!place){status('Enter the sighting suburb or location first');return}
   status(`Finding ${place}…`);
   try{
     const coords=await geocodeLocation(place);
-    if(!coords){status('Couldn’t find that location — try a suburb, town, park or landmark');return}
+    if(!coords){status('Couldn’t find that place — try a more specific suburb or town');return}
     await suggestAt(coords);
-  }catch(e){console.error(e);status('Couldn’t resolve that location — try a more specific place name')}
-}
-async function suggestFromCurrent(){
-  status('Getting your current location…');
-  const coords=await currentCoords();
-  if(!coords){status('Current location unavailable — check location permission');return}
-  await suggestAt(coords);
+  }catch(e){console.error(e);status('Couldn’t resolve that place — try a more specific suburb or town')}
 }
 function init(){
   const original=document.getElementById('autoClassBtn');
   if(!original)return;
-  original.textContent='Suggest from entered location';
+  original.textContent='Suggest class from entered location';
   original.onclick=suggestFromEntered;
-  let current=document.getElementById('currentClassBtn');
-  if(!current){
-    current=document.createElement('button');
-    current.type='button';current.id='currentClassBtn';current.className='secondary-btn';current.textContent='Use current location';
-    original.insertAdjacentElement('afterend',current);
-  }
-  current.onclick=suggestFromCurrent;
+  const current=document.getElementById('currentClassBtn');
+  if(current)current.remove();
   const row=original.parentElement;if(row)row.classList.add('class-location-actions');
 }
 window.addEventListener('load',()=>setTimeout(init,0));
