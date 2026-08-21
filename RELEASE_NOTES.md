@@ -1,10 +1,8 @@
-# Bird Compendium v3
+# Bird Compendium v4
 
-## Changes
-- Fixed species editing so the Edit button updates the existing bird card.
-- Added editing for individual sightings, including date, location, notes, and photos.
-- Added delete controls for individual sightings.
-- Added a clear “Delete bird from compendium” control inside every bird card.
-- Added an overlapping-windows badge to home-screen tiles when a species has multiple sightings.
-- Kept the existing IndexedDB database name and version so existing entries are preserved when this update replaces the files at the same GitHub Pages URL.
-- Bumped the PWA cache to v3 so devices fetch the new code.
+- Cross-device Supabase account sync
+- Existing phone IndexedDB collection is preserved and imported on first sync
+- Private cloud photo storage
+- Sync button and sign-in UI
+- v4 service worker uses network-first loading and immediately removes stale v2/v3 caches to fix the iPhone update issue
+- Keeps all v3 editing, deletion, multiple-sighting badge, and cover-photo features
