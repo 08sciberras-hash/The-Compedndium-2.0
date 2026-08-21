@@ -9,19 +9,13 @@
 <meta name="apple-mobile-web-app-title" content="Bird Compendium">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=4.2">
 <title>Bird Compendium</title>
 </head>
 <body>
 <div id="app">
-  <header class="topbar">
-    <div><h1>Bird Compendium</h1><p id="summaryText" class="muted">0 species discovered</p></div>
-    <button id="addBirdBtn" class="icon-btn primary">＋</button>
-  </header>
-  <section class="toolbar">
-    <div class="search-wrap"><span>⌕</span><input id="searchInput" name="bird-search" type="search" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Search common name…"></div>
-    <select id="sortSelect"><option value="date-desc">Newest added</option><option value="date-asc">Oldest added</option><option value="name-asc">A–Z</option><option value="name-desc">Z–A</option><option value="rarity-asc">Rarity: low → high</option><option value="rarity-desc">Rarity: high → low</option></select>
-  </section>
+  <header class="topbar"><div><h1>Bird Compendium</h1><p id="summaryText" class="muted">0 species discovered</p></div><button id="addBirdBtn" class="icon-btn primary">＋</button></header>
+  <section class="toolbar"><div class="search-wrap"><span>⌕</span><input id="searchInput" name="bird-species-search" type="search" autocomplete="new-password" autocapitalize="none" spellcheck="false" inputmode="search" placeholder="Search common name…"></div><select id="sortSelect"><option value="date-desc">Newest added</option><option value="date-asc">Oldest added</option><option value="name-asc">A–Z</option><option value="name-desc">Z–A</option><option value="rarity-asc">Rarity: low → high</option><option value="rarity-desc">Rarity: high → low</option></select></section>
   <section id="rarityFilters" class="rarity-filters"></section><main id="birdGrid" class="bird-grid"></main>
   <section id="emptyState" class="empty-state hidden"><div class="empty-bird">🪶</div><h2>Your compendium is empty</h2><p>Add your first photographed species.</p><button class="primary-btn" id="emptyAddBtn">Add bird</button></section>
 </div>
@@ -31,5 +25,5 @@
 <dialog id="editSightingDialog" class="sheet-dialog"><form method="dialog" class="sheet"><div class="sheet-head"><button value="cancel" class="text-btn">Cancel</button><h2>Edit sighting</h2><button id="updateSightingBtn" value="default" class="text-btn accent">Save</button></div><div class="sheet-body"><label><span>Add more photos</span><input id="editSightingPhotosInput" type="file" accept="image/*" multiple></label><div id="editSightingExistingPhotos" class="photo-strip"></div><div id="editSightingNewPhotoStrip" class="photo-strip"></div><label><span>Date</span><input id="editSightingDateInput" type="date"></label><label><span>Location</span><div class="location-row"><input id="editSightingLocationInput" type="text"><button type="button" id="editSightingUseLocationBtn" class="mini-btn">Use GPS</button></div></label><label><span>Notes <em>optional</em></span><textarea id="editSightingNotesInput" rows="4"></textarea></label></div></form></dialog>
 <template id="birdTileTemplate"><button class="bird-tile"><img class="tile-photo" alt=""><span class="multi-sighting-badge" aria-label="Multiple sightings" title="Multiple sightings"><span></span><span></span></span><div class="tile-overlay"><span class="rarity-dot"></span><span class="tile-name"></span></div></button></template>
 <template id="sightingTemplate"><article class="sighting-card"><div class="sighting-head"><div><strong class="sighting-date"></strong><div class="sighting-location muted small"></div></div><div class="sighting-actions"><button type="button" class="mini-btn edit-sighting-btn">Edit</button><button type="button" class="mini-btn delete-sighting-btn">Delete</button></div></div><div class="photo-strip sighting-photos"></div><p class="sighting-notes"></p></article></template>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script><script src="cloud-sync.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js?v=4.2"></script><script src="cloud-sync.js?v=4.2"></script>
 </body></html>
