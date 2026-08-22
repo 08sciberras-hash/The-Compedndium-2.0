@@ -1,59 +1,16 @@
 (()=>{
-const THEME_KEY="birdCompendiumTheme";
-const FONT_KEY="birdCompendiumFont";
-const THEMES=[["dark","Dark"],["light","Light"],["forest","Forest"],["parchment","Parchment"],["midnight","Midnight"]];
-const FONTS=[
-  ["system","System"],["oldenglish","Old English"],["garamond","Garamond"],["georgia","Georgia"],
-  ["typewriter","Typewriter"],["rounded","Rounded"],["condensed","Condensed"],["trebuchet","Trebuchet"]
-];
-function applyTheme(theme){
-  const valid=THEMES.some(([id])=>id===theme)?theme:"dark";
-  document.documentElement.dataset.theme=valid;localStorage.setItem(THEME_KEY,valid);
-  const meta=document.querySelector('meta[name="theme-color"]');
-  const colors={dark:"#101214",light:"#f4f1ea",forest:"#0d1813",parchment:"#e8dcc3",midnight:"#090f1a"};
-  if(meta)meta.setAttribute("content",colors[valid]);
-  const picker=document.getElementById("themePicker");if(picker)picker.value=valid;
-}
-function applyFont(font){
-  const valid=FONTS.some(([id])=>id===font)?font:"system";
-  document.documentElement.dataset.font=valid;localStorage.setItem(FONT_KEY,valid);
-  const picker=document.getElementById("fontPicker");if(picker)picker.value=valid;
-}
-function makePicker(id,label,items,value,onchange){
-  const picker=document.createElement("select");picker.id=id;picker.className="preference-picker";picker.setAttribute("aria-label",label);
-  picker.innerHTML=items.map(([key,name])=>`<option value="${key}">${name}</option>`).join("");picker.value=value;picker.onchange=()=>onchange(picker.value);return picker;
-}
-function setupMobileAdd(topbar,actions,add){
-  add.innerHTML='<span class="add-plus">＋</span><span class="add-label">Add species</span>';
-  let dock=document.getElementById("mobileAddDock");
-  if(!dock){dock=document.createElement("div");dock.id="mobileAddDock";dock.className="mobile-add-dock";topbar.insertAdjacentElement("afterend",dock)}
-  let observer=null;
-  const place=()=>{
-    const mobile=window.matchMedia("(max-width:700px)").matches;
-    if(observer){observer.disconnect();observer=null}
-    add.classList.remove("mobile-floating","mobile-docked");
-    if(mobile){
-      if(add.parentElement!==dock)dock.appendChild(add);
-      add.classList.add("mobile-docked");
-      observer=new IntersectionObserver(entries=>{
-        const visible=entries[0]?.isIntersecting;
-        add.classList.toggle("mobile-floating",!visible);
-      },{threshold:0.15});
-      observer.observe(dock);
-    }else{
-      if(add.parentElement!==actions)actions.appendChild(add);
-    }
-  };
-  place();window.addEventListener("resize",place,{passive:true});
-}
-function init(){
-  const theme=localStorage.getItem(THEME_KEY)||"dark",font=localStorage.getItem(FONT_KEY)||"system";applyTheme(theme);applyFont(font);
-  const topbar=document.querySelector(".topbar"),add=document.getElementById("addBirdBtn");if(!topbar||!add)return;
-  let actions=topbar.querySelector(".topbar-actions");if(!actions){actions=document.createElement("div");actions.className="topbar-actions";topbar.appendChild(actions);actions.appendChild(add)}
-  const controls=document.createElement("div");controls.className="preference-controls";
-  controls.append(makePicker("themePicker","App theme",THEMES,theme,applyTheme),makePicker("fontPicker","App font",FONTS,font,applyFont));
-  actions.insertBefore(controls,add);
-  setupMobileAdd(topbar,actions,add);
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+const THEME_KEY='birdCompendiumTheme',FONT_KEY='birdCompendiumFont',ABILITY_KEY='compendiumAbilityStatesV1';
+const ALL_THEMES=[['dark','Dark'],['light','Light'],['forest','Forest'],['parchment','Parchment'],['khaki','Khaki'],['midnight','Midnight']];
+const ALL_FONTS=[['system','System'],['oldenglish','Old English'],['garamond','Garamond'],['georgia','Georgia'],['typewriter','Typewriter'],['rounded','Rounded'],['condensed','Condensed'],['trebuchet','Trebuchet']];
+const read=()=>{try{return JSON.parse(localStorage.getItem(ABILITY_KEY)||'{}')}catch{return{}}};
+function unlocked(){try{return JSON.parse(localStorage.getItem('compendiumUnlockedAbilitiesV1')||'[]')}catch{return[]}}
+function availableThemes(){const u=unlocked(),x=[['dark','Dark']];if(u.includes('theme-light'))x.push(['light','Light']);if(u.includes('theme-field'))x.push(['parchment','Parchment'],['khaki','Khaki']);if(u.includes('theme-midnight'))x.push(['midnight','Midnight']);if(u.includes('theme-forest'))x.push(['forest','Forest']);return x}
+function availableFonts(){const u=unlocked(),x=[['system','System']];if(u.includes('font-garamond'))x.push(['garamond','Garamond']);if(u.includes('font-local'))x.push(['georgia','Georgia'],['typewriter','Typewriter']);if(u.includes('font-rounded'))x.push(['rounded','Rounded']);if(u.includes('font-condensed'))x.push(['condensed','Condensed']);return x}
+function applyTheme(theme){const items=availableThemes(),valid=items.some(([id])=>id===theme)?theme:'dark';document.documentElement.dataset.theme=valid;localStorage.setItem(THEME_KEY,valid);const meta=document.querySelector('meta[name="theme-color"]'),colors={dark:'#101214',light:'#f4f1ea',forest:'#0d1813',parchment:'#e8dcc3',khaki:'#b8ad79',midnight:'#090f1a'};if(meta)meta.content=colors[valid]||colors.dark;const p=document.getElementById('themePicker');if(p)p.value=valid}
+function applyFont(font){const items=availableFonts(),valid=items.some(([id])=>id===font)?font:'system';document.documentElement.dataset.font=valid;localStorage.setItem(FONT_KEY,valid);const p=document.getElementById('fontPicker');if(p)p.value=valid}
+function makePicker(id,label,items,value,onchange){const p=document.createElement('select');p.id=id;p.className='preference-picker';p.setAttribute('aria-label',label);p.innerHTML=items.map(([k,n])=>`<option value="${k}">${n}</option>`).join('');p.value=value;p.onchange=()=>onchange(p.value);return p}
+function setupMobileAdd(topbar,actions,add){add.innerHTML='<span class="add-plus">＋</span><span class="add-label">Add species</span>';let dock=document.getElementById('mobileAddDock');if(!dock){dock=document.createElement('div');dock.id='mobileAddDock';dock.className='mobile-add-dock';topbar.insertAdjacentElement('afterend',dock)}let observer=null;const place=()=>{const mobile=matchMedia('(max-width:700px)').matches;if(observer){observer.disconnect();observer=null}add.classList.remove('mobile-floating','mobile-docked');if(mobile){if(add.parentElement!==dock)dock.appendChild(add);add.classList.add('mobile-docked');observer=new IntersectionObserver(es=>add.classList.toggle('mobile-floating',!es[0]?.isIntersecting),{threshold:.15});observer.observe(dock)}else if(add.parentElement!==actions)actions.appendChild(add)};place();addEventListener('resize',place,{passive:true})}
+function refreshControls(){const controls=document.querySelector('.preference-controls');if(!controls)return;controls.innerHTML='';const u=unlocked();if(u.some(x=>x.startsWith('theme-'))){const t=availableThemes(),v=localStorage.getItem(THEME_KEY)||'dark';controls.append(makePicker('themePicker','App theme',t,t.some(x=>x[0]===v)?v:'dark',applyTheme))}else applyTheme('dark');if(u.some(x=>x.startsWith('font-'))){const f=availableFonts(),v=localStorage.getItem(FONT_KEY)||'system';controls.append(makePicker('fontPicker','App font',f,f.some(x=>x[0]===v)?v:'system',applyFont))}else applyFont('system')}
+function init(){document.documentElement.dataset.theme='dark';document.documentElement.dataset.font='system';localStorage.setItem(THEME_KEY,'dark');localStorage.setItem(FONT_KEY,'system');const topbar=document.querySelector('.topbar'),add=document.getElementById('addBirdBtn');if(!topbar||!add)return;let actions=topbar.querySelector('.topbar-actions');if(!actions){actions=document.createElement('div');actions.className='topbar-actions';topbar.appendChild(actions);actions.appendChild(add)}let controls=actions.querySelector('.preference-controls');if(!controls){controls=document.createElement('div');controls.className='preference-controls';actions.insertBefore(controls,add)}refreshControls();setupMobileAdd(topbar,actions,add);addEventListener('achievement-abilities-changed',refreshControls)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
